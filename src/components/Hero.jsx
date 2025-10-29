@@ -203,7 +203,7 @@ export default function Hero() {
                 {/* Profile Image */}
                 <div className="relative rounded-2xl overflow-hidden border-4 border-white/50 dark:border-white/10 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
                   <img
-                    src="src/assets/siyam1.JPG"
+                    src="src/assets/projects/siyam1.jpg"
                     alt="Siyam Vijayaraj - Software Engineer"
                     className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
                     onError={(e) => {
