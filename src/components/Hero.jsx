@@ -8,8 +8,13 @@ import {
   Sparkles,
 } from "lucide-react";
 
+// Import your assets directly
+import profileImage from "../assets/projects/siyam1.jpg";
+import resumePdf from "../assets/Resume.pdf";
+
 export default function Hero() {
   const [currentRole, setCurrentRole] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(true);
 
   const roles = [
     "Software Engineer",
@@ -29,6 +34,10 @@ export default function Hero() {
 
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleImageError = () => {
+    setImageLoaded(false);
   };
 
   return (
@@ -146,8 +155,8 @@ export default function Hero() {
               </button>
 
               <a
-                href="/src/assets/Resume.pdf"
-                download
+                href={resumePdf}
+                download="Siyam_Vijayaraj_Resume.pdf"
                 className="group border-2 border-green-500/50 dark:border-green-500/30 hover:border-green-600 dark:hover:border-green-500/50 bg-green-500/10 dark:bg-green-500/5 backdrop-blur-sm hover:bg-green-500/20 dark:hover:bg-green-500/10 text-gray-800 dark:text-white font-semibold px-6 py-4 rounded-full transition-all duration-300 hover:scale-105 flex items-center gap-3"
               >
                 <Download className="w-5 h-5" />
@@ -200,26 +209,27 @@ export default function Hero() {
               <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
 
-                {/* Profile Image */}
+                {/* Profile Image or Fallback */}
                 <div className="relative rounded-2xl overflow-hidden border-4 border-white/50 dark:border-white/10 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
-                  <img
-                    src="src/assets/projects/siyam1.jpg"
-                    alt="Siyam Vijayaraj - Software Engineer"
-                    className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                      e.target.nextSibling.style.display = "block";
-                    }}
-                  />
-
-                  {/* Fallback if image doesn't load */}
-                  <div className="hidden w-full h-96 bg-gradient-to-br from-blue-500/20 to-purple-600/20 items-center justify-center">
-                    <div className="text-center text-gray-600 dark:text-white/60">
+                  {imageLoaded ? (
+                    <img
+                      src={profileImage}
+                      alt="Siyam Vijayaraj - Software Engineer"
+                      className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
+                      onError={handleImageError}
+                      onLoad={() => setImageLoaded(true)}
+                    />
+                  ) : (
+                    <div className="w-full h-96 flex flex-col items-center justify-center bg-gradient-to-br from-blue-500/20 to-purple-600/20">
                       <div className="text-6xl mb-4">👨‍💻</div>
-                      <p className="text-lg font-semibold">Siyam Vijayaraj</p>
-                      <p className="text-sm">Software Engineer</p>
+                      <p className="text-lg font-semibold text-gray-700 dark:text-white">
+                        Siyam Vijayaraj
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-white/60">
+                        Software Engineer
+                      </p>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
