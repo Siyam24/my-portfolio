@@ -213,7 +213,7 @@ export default function Hero() {
                   />
 
                   {/* Fallback if image doesn't load */}
-                  <div className="hidden w-full h-96 bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center">
+                  <div className="hidden w-full h-96 bg-gradient-to-br from-blue-500/20 to-purple-600/20 items-center justify-center">
                     <div className="text-center text-gray-600 dark:text-white/60">
                       <div className="text-6xl mb-4">👨‍💻</div>
                       <p className="text-lg font-semibold">Siyam Vijayaraj</p>
