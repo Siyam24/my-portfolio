@@ -70,19 +70,14 @@ const images = {
   ),
 };
 
-const sliderSettings = {
-  dots: true,
-  infinite: true,
-  speed: 600,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: false,
-  autoplay: true,
-  autoplaySpeed: 4000,
-  pauseOnHover: true,
-  adaptiveHeight: true,
-  dotsClass: "slick-dots !bottom-3",
-};
+// Custom dots component to handle overflow
+const CustomDots = ({ dots }) => (
+  <div className="slick-dots-container">
+    <ul className="slick-dots custom-dots">
+      {dots}
+    </ul>
+  </div>
+);
 
 // Featured projects - highlight your best work
 const featuredProjects = ["meals", "bananaCipher", "gold"];
@@ -91,6 +86,29 @@ const featuredProjects = ["meals", "bananaCipher", "gold"];
 const ProjectCard = memo(({ project, index }) => {
   const [loaded, setLoaded] = useState(false);
   const isFeatured = featuredProjects.includes(project.key);
+
+  // Custom slider settings with responsive dots
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    pauseOnHover: true,
+    adaptiveHeight: true,
+    appendDots: dots => (
+      <CustomDots dots={dots} />
+    ),
+    customPaging: i => (
+      <div className="dot-wrapper">
+        <div className="custom-dot" />
+      </div>
+    ),
+    dotsClass: "slick-dots !bottom-3",
+  };
 
   return (
     <motion.div
@@ -210,6 +228,78 @@ const ProjectCard = memo(({ project, index }) => {
           )}
         </div>
       </div>
+
+      {/* Custom CSS for dots */}
+      <style jsx>{`
+        .slick-dots-container {
+          position: absolute;
+          bottom: 8px;
+          width: 100%;
+          pointer-events: none;
+        }
+        
+        .slick-dots.custom-dots {
+          position: relative;
+          bottom: 0;
+          margin: 0;
+          padding: 0 8px;
+          display: flex !important;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          overflow-y: hidden;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          max-width: 100%;
+          gap: 4px;
+        }
+        
+        .slick-dots.custom-dots::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .dot-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: auto;
+          height: auto;
+          margin: 0;
+          flex-shrink: 0;
+        }
+        
+        .custom-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: rgba(255, 255, 255, 0.5);
+          transition: all 0.3s ease;
+          margin: 0 2px;
+        }
+        
+        .slick-dots li.slick-active .custom-dot {
+          width: 20px;
+          border-radius: 10px;
+          background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .slick-dots li {
+          margin: 0;
+          width: auto;
+          height: auto;
+        }
+        
+        .slick-dots li button {
+          width: 24px;
+          height: 24px;
+          padding: 0;
+        }
+        
+        .slick-dots li button:before {
+          display: none;
+        }
+      `}</style>
     </motion.div>
   );
 });
@@ -367,6 +457,78 @@ export default function Projects() {
           </motion.div>
         )}
       </div>
+
+      {/* Global styles for slick dots */}
+      <style jsx global>{`
+        .slick-dots-container {
+          position: absolute;
+          bottom: 8px;
+          width: 100%;
+          pointer-events: none;
+        }
+        
+        .slick-dots.custom-dots {
+          position: relative;
+          bottom: 0;
+          margin: 0;
+          padding: 0 8px;
+          display: flex !important;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          overflow-y: hidden;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          max-width: 100%;
+          gap: 4px;
+        }
+        
+        .slick-dots.custom-dots::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .dot-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: auto;
+          height: auto;
+          margin: 0;
+          flex-shrink: 0;
+        }
+        
+        .custom-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: rgba(255, 255, 255, 0.5);
+          transition: all 0.3s ease;
+          margin: 0 2px;
+        }
+        
+        .slick-dots li.slick-active .custom-dot {
+          width: 20px;
+          border-radius: 10px;
+          background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .slick-dots li {
+          margin: 0;
+          width: auto;
+          height: auto;
+        }
+        
+        .slick-dots li button {
+          width: 24px;
+          height: 24px;
+          padding: 0;
+        }
+        
+        .slick-dots li button:before {
+          display: none;
+        }
+      `}</style>
     </section>
   );
 }
