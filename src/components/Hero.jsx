@@ -8,9 +8,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
-// Import your assets directly
+// Import your assets directly - REMOVE resume import
 import profileImage from "../assets/projects/siyam1.jpg";
-import resumePdf from "../assets/Resume.pdf";
 
 export default function Hero() {
   const [currentRole, setCurrentRole] = useState(0);
@@ -159,9 +158,9 @@ export default function Hero() {
                 <span>Get In Touch</span>
               </button>
 
-              {/* Resume Button - Now opens in new tab like Navbar */}
+              {/* Resume Button - Updated to use public folder path */}
               <a
-                href={resumePdf}
+                href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={handleResumeClick}
