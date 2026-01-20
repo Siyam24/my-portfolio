@@ -37,6 +37,12 @@ export default function Navbar() {
     { name: "Contact", href: "#contact" },
   ];
 
+  // Function to handle resume click
+  const handleResumeClick = (e) => {
+    // Optional: You can add analytics or tracking here
+    console.log("Resume viewed");
+  };
+
   return (
     <>
       <nav
@@ -90,17 +96,18 @@ export default function Navbar() {
               className={`p-2 rounded-lg transition-all duration-300 ${
                 scrolled
                   ? "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
-                  : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
+                  : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray400"
               }`}
             >
               {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
 
-            {/* Resume Button (Open in new tab) */}
+            {/* Resume Button - Opens in new tab with PDF viewer */}
             <a
-              href="src/assets/Resume.pdf"
+              href="/resume.pdf" // Changed to public folder path
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleResumeClick}
               className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl"
             >
               <Download className="w-4 h-4" />
@@ -141,13 +148,16 @@ export default function Navbar() {
                 </a>
               ))}
 
-              {/* Mobile Resume Button (Open in new tab) */}
+              {/* Mobile Resume Button */}
               <a
-                href="src/assets/Resume.pdf"
+                href="/resume.pdf" // Changed to public folder path
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  handleResumeClick();
+                  setMenuOpen(false);
+                }}
                 className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg font-medium transition-all duration-300 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
-                onClick={() => setMenuOpen(false)}
               >
                 <Download className="w-4 h-4" />
                 View Resume
