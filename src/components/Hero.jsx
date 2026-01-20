@@ -39,9 +39,11 @@ export default function Hero() {
     setImageLoaded(false);
   };
 
-  // Resume button handler - consistent with navbar
+  // Fixed Resume button handler for Netlify
   const handleResumeClick = () => {
-    console.log("Resume viewed from Hero section");
+    // Open resume in new tab
+    window.open('/resume.pdf', '_blank', 'noopener,noreferrer');
+    console.log("Resume opened from Hero section");
   };
 
   return (
@@ -158,17 +160,14 @@ export default function Hero() {
                 <span>Get In Touch</span>
               </button>
 
-              {/* Resume Button - Updated to use public folder path */}
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* Resume Button - UPDATED FOR NETLIFY */}
+              <button
                 onClick={handleResumeClick}
                 className="group border-2 border-green-500/50 dark:border-green-500/30 hover:border-green-600 dark:hover:border-green-500/50 bg-green-500/10 dark:bg-green-500/5 backdrop-blur-sm hover:bg-green-500/20 dark:hover:bg-green-500/10 text-gray-800 dark:text-white font-semibold px-6 py-4 rounded-full transition-all duration-300 hover:scale-105 flex items-center gap-3"
               >
                 <Download className="w-5 h-5" />
                 <span>Resume</span>
-              </a>
+              </button>
             </div>
 
             {/* Social Links */}
