@@ -7,7 +7,7 @@ export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false);
 
   // Use absolute path for production
-  const resumePath = "/resume.pdf";
+  const resumePath = "/Resume.pdf";
 
   useEffect(() => {
     const handleScroll = () => {
