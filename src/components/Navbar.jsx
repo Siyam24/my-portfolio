@@ -6,6 +6,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+  // Use absolute path for production
+  const resumePath = "/resume.pdf";
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -30,18 +33,27 @@ export default function Navbar() {
     setDarkMode((prevMode) => !prevMode);
   };
 
+  const handleResumeClick = (e) => {
+    console.log("Resume viewed");
+    
+    // Optional: Track download/views
+    fetch(resumePath)
+      .then(response => {
+        if (!response.ok) {
+          console.warn("Resume file might not be accessible");
+        }
+      })
+      .catch(error => {
+        console.error("Error accessing resume:", error);
+      });
+  };
+
   const navItems = [
     { name: "Home", href: "#home" },
     { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Contact", href: "#contact" },
   ];
-
-  // Function to handle resume click
-  const handleResumeClick = (e) => {
-    // Optional: You can add analytics or tracking here
-    console.log("Resume viewed");
-  };
 
   return (
     <>
@@ -102,9 +114,9 @@ export default function Navbar() {
               {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
 
-            {/* Resume Button - Opens in new tab with PDF viewer */}
+            {/* Resume Button */}
             <a
-              href="/resume.pdf" // Changed to public folder path
+              href={resumePath}
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleResumeClick}
@@ -150,7 +162,7 @@ export default function Navbar() {
 
               {/* Mobile Resume Button */}
               <a
-                href="/resume.pdf" // Changed to public folder path
+                href={resumePath}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {
