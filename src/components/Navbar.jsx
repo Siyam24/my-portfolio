@@ -102,11 +102,12 @@ export default function Navbar() {
               {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
 
-            {/* Resume Button - Opens in new tab with PDF viewer */}
+            {/* Resume Button - FIXED: Add download attribute and proper href */}
             <a
-              href="/resume.pdf" // Changed to public folder path
+              href="/Siyam_Vijayaraj_Resume.pdf" // Use exact filename
               target="_blank"
               rel="noopener noreferrer"
+              download="Siyam_Vijayaraj_Resume.pdf" // Add download attribute
               onClick={handleResumeClick}
               className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl"
             >
@@ -148,11 +149,12 @@ export default function Navbar() {
                 </a>
               ))}
 
-              {/* Mobile Resume Button */}
+              {/* Mobile Resume Button - FIXED */}
               <a
-                href="/resume.pdf" // Changed to public folder path
+                href="/Siyam_Vijayaraj_Resume.pdf" // Use exact filename
                 target="_blank"
                 rel="noopener noreferrer"
+                download="Siyam_Vijayaraj_Resume.pdf" // Add download attribute
                 onClick={() => {
                   handleResumeClick();
                   setMenuOpen(false);
