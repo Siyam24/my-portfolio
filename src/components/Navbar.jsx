@@ -4,18 +4,24 @@ import { Menu, X, Code2, Download, Sun, Moon } from "lucide-react";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
 
-  // Use absolute path for production
-  const resumePath = "/Resume.pdf";
+  // Lazy init: read saved preference first, fall back to system preference.
+  // Prevents dark mode resetting to system default on every reload.
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const saved = localStorage.getItem("theme");
+    if (saved) return saved === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
+
+  // Use lowercase path consistently across the app (matches Hero.jsx).
+  // Make sure your actual file in /public is named resume.pdf (lowercase).
+  const resumePath = "/resume.pdf";
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-
-    const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setDarkMode(isDarkMode);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -27,25 +33,24 @@ export default function Navbar() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => !prevMode);
   };
 
-  const handleResumeClick = (e) => {
-    console.log("Resume viewed");
-    
-    // Optional: Track download/views
-    fetch(resumePath)
-      .then(response => {
-        if (!response.ok) {
-          console.warn("Resume file might not be accessible");
-        }
-      })
-      .catch(error => {
-        console.error("Error accessing resume:", error);
-      });
+  const handleResumeClick = () => {
+    // Wire this up to real analytics (e.g. a GA/Plausible event) if you want
+    // actual tracking. Left as a no-op click handler for now.
   };
 
   const navItems = [
@@ -68,15 +73,11 @@ export default function Navbar() {
           {/* Logo */}
           <a href="#home" className="flex items-center gap-2 group">
             <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg group-hover:scale-110 transition-transform duration-300">
-              <Code2 className="w-5 h-5 text-white" />
+              <Code2 className="w-5 h-5 text-white" aria-hidden="true" />
             </div>
-            <span
-              className={`text-xl font-bold tracking-tight transition-colors duration-300 ${
-                scrolled ? "text-black dark:text-white" : "text-black dark:text-white"
-              }`}
-            >
-              <span className="text-black dark:text-white">Siyam</span>
-              <span className="text-black dark:text-white">.dev</span>
+            <span className="text-xl font-bold tracking-tight text-black dark:text-white">
+              <span>Siyam</span>
+              <span>.dev</span>
             </span>
           </a>
 
@@ -87,16 +88,10 @@ export default function Navbar() {
                 <li key={item.name}>
                   <a
                     href={item.href}
-                    className={`relative font-medium transition-all duration-300 group ${
-                      scrolled
-                        ? "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
-                        : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
-                    }`}
+                    className="relative font-medium transition-all duration-300 group text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
                   >
                     {item.name}
-                    <span
-                      className={`absolute left-0 -bottom-1 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300 group-hover:w-full`}
-                    ></span>
+                    <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
                   </a>
                 </li>
               ))}
@@ -105,13 +100,14 @@ export default function Navbar() {
             {/* Theme Toggle */}
             <button
               onClick={toggleDarkMode}
-              className={`p-2 rounded-lg transition-all duration-300 ${
-                scrolled
-                  ? "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
-                  : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray400"
-              }`}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              className="p-2 rounded-lg transition-all duration-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
             >
-              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {darkMode ? (
+                <Sun className="w-5 h-5" aria-hidden="true" />
+              ) : (
+                <Moon className="w-5 h-5" aria-hidden="true" />
+              )}
             </button>
 
             {/* Resume Button */}
@@ -122,7 +118,7 @@ export default function Navbar() {
               onClick={handleResumeClick}
               className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl"
             >
-              <Download className="w-4 h-4" />
+              <Download className="w-4 h-4" aria-hidden="true" />
               Resume
             </a>
           </div>
@@ -131,23 +127,38 @@ export default function Navbar() {
           <div className="flex items-center gap-4 md:hidden">
             <button
               onClick={toggleDarkMode}
-              className={`p-2 rounded-lg transition-all duration-300 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400`}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              className="p-2 rounded-lg transition-all duration-300 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
             >
-              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {darkMode ? (
+                <Sun className="w-5 h-5" aria-hidden="true" />
+              ) : (
+                <Moon className="w-5 h-5" aria-hidden="true" />
+              )}
             </button>
 
             <button
-              className={`p-2 rounded-lg transition-all duration-300 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400`}
+              className="p-2 rounded-lg transition-all duration-300 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
               onClick={() => setMenuOpen(!menuOpen)}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
             >
-              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {menuOpen ? (
+                <X className="w-6 h-6" aria-hidden="true" />
+              ) : (
+                <Menu className="w-6 h-6" aria-hidden="true" />
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile Dropdown */}
         {menuOpen && (
-          <div className="absolute top-full left-0 w-full md:hidden transition-all duration-500 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-xl border-t border-gray-200 dark:border-gray-700">
+          <div
+            id="mobile-menu"
+            className="absolute top-full left-0 w-full md:hidden transition-all duration-500 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-xl border-t border-gray-200 dark:border-gray-700"
+          >
             <div className="px-6 py-6 space-y-6">
               {navItems.map((item) => (
                 <a
@@ -171,7 +182,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg font-medium transition-all duration-300 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4" aria-hidden="true" />
                 View Resume
               </a>
             </div>

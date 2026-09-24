@@ -1,9 +1,7 @@
-import React, { useEffect, useState, Suspense, memo } from "react";
-import AOS from "aos";
+import React, { useState, memo } from "react";
 import { motion } from "framer-motion";
 import Slider from "react-slick";
 import { ExternalLink, Github, Star, Eye } from "lucide-react";
-import "aos/dist/aos.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -73,21 +71,21 @@ const images = {
 // Custom dots component to handle overflow
 const CustomDots = ({ dots }) => (
   <div className="slick-dots-container">
-    <ul className="slick-dots custom-dots">
-      {dots}
-    </ul>
+    <ul className="slick-dots custom-dots">{dots}</ul>
   </div>
 );
 
 // Featured projects - highlight your best work
 const featuredProjects = ["meals", "bananaCipher", "gold"];
 
+// Helper: only treat a link as real if it's set and isn't a placeholder "#"
+const hasRealLink = (link) => Boolean(link) && link !== "#";
+
 // 🧱 Project Card Component (memoized for performance)
 const ProjectCard = memo(({ project, index }) => {
   const [loaded, setLoaded] = useState(false);
   const isFeatured = featuredProjects.includes(project.key);
 
-  // Custom slider settings with responsive dots
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -99,10 +97,8 @@ const ProjectCard = memo(({ project, index }) => {
     autoplaySpeed: 4000,
     pauseOnHover: true,
     adaptiveHeight: true,
-    appendDots: dots => (
-      <CustomDots dots={dots} />
-    ),
-    customPaging: i => (
+    appendDots: (dots) => <CustomDots dots={dots} />,
+    customPaging: () => (
       <div className="dot-wrapper">
         <div className="custom-dot" />
       </div>
@@ -126,7 +122,7 @@ const ProjectCard = memo(({ project, index }) => {
       {isFeatured && (
         <div className="absolute top-4 left-4 z-10">
           <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-            <Star className="w-3 h-3 fill-current" />
+            <Star className="w-3 h-3 fill-current" aria-hidden="true" />
             Featured
           </span>
         </div>
@@ -137,7 +133,7 @@ const ProjectCard = memo(({ project, index }) => {
         <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="flex gap-2">
             <div className="bg-black/60 backdrop-blur-sm rounded-full p-2">
-              <Eye className="w-4 h-4 text-white" />
+              <Eye className="w-4 h-4 text-white" aria-hidden="true" />
             </div>
           </div>
         </div>
@@ -168,7 +164,7 @@ const ProjectCard = memo(({ project, index }) => {
           <h3 className="text-xl font-bold dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             {project.title}
           </h3>
-          {project.demo && (
+          {hasRealLink(project.demo) && (
             <a
               href={project.demo}
               target="_blank"
@@ -176,7 +172,7 @@ const ProjectCard = memo(({ project, index }) => {
               className="text-green-600 hover:text-green-700 transition-colors flex-shrink-0"
               title="Live Demo"
             >
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="w-4 h-4" aria-hidden="true" />
             </a>
           )}
         </div>
@@ -202,16 +198,23 @@ const ProjectCard = memo(({ project, index }) => {
 
         {/* Action Buttons */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto">
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group/link"
-          >
-            <Github className="w-4 h-4" />
-            <span>Source Code</span>
-            <ExternalLink className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
-          </a>
+          {hasRealLink(project.link) ? (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group/link"
+            >
+              <Github className="w-4 h-4" aria-hidden="true" />
+              <span>Source Code</span>
+              <ExternalLink className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" aria-hidden="true" />
+            </a>
+          ) : (
+            <span className="flex items-center gap-2 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
+              <Github className="w-4 h-4" aria-hidden="true" />
+              <span>Coming Soon</span>
+            </span>
+          )}
 
           {project.category && (
             <span
@@ -228,78 +231,6 @@ const ProjectCard = memo(({ project, index }) => {
           )}
         </div>
       </div>
-
-      {/* Custom CSS for dots */}
-      <style jsx>{`
-        .slick-dots-container {
-          position: absolute;
-          bottom: 8px;
-          width: 100%;
-          pointer-events: none;
-        }
-        
-        .slick-dots.custom-dots {
-          position: relative;
-          bottom: 0;
-          margin: 0;
-          padding: 0 8px;
-          display: flex !important;
-          justify-content: center;
-          align-items: center;
-          flex-wrap: nowrap;
-          overflow-x: auto;
-          overflow-y: hidden;
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-          max-width: 100%;
-          gap: 4px;
-        }
-        
-        .slick-dots.custom-dots::-webkit-scrollbar {
-          display: none;
-        }
-        
-        .dot-wrapper {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: auto;
-          height: auto;
-          margin: 0;
-          flex-shrink: 0;
-        }
-        
-        .custom-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background-color: rgba(255, 255, 255, 0.5);
-          transition: all 0.3s ease;
-          margin: 0 2px;
-        }
-        
-        .slick-dots li.slick-active .custom-dot {
-          width: 20px;
-          border-radius: 10px;
-          background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .slick-dots li {
-          margin: 0;
-          width: auto;
-          height: auto;
-        }
-        
-        .slick-dots li button {
-          width: 24px;
-          height: 24px;
-          padding: 0;
-        }
-        
-        .slick-dots li button:before {
-          display: none;
-        }
-      `}</style>
     </motion.div>
   );
 });
@@ -307,9 +238,9 @@ const ProjectCard = memo(({ project, index }) => {
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState("all");
 
-  useEffect(() => {
-    AOS.init({ duration: 800, once: true });
-  }, []);
+  // AOS.init() is called once in App.jsx and applies globally —
+  // it must not be re-initialized here, or its settings get overwritten
+  // by whichever component's effect runs last on mount.
 
   const projects = [
     {
@@ -415,6 +346,7 @@ export default function Projects() {
             <button
               key={category}
               onClick={() => setActiveFilter(category)}
+              aria-pressed={activeFilter === category}
               className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
                 activeFilter === category
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25"
@@ -428,20 +360,9 @@ export default function Projects() {
 
         {/* Projects Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <Suspense
-            fallback={
-              <div className="col-span-full text-center py-12">
-                <div className="inline-flex items-center gap-3 text-gray-500 dark:text-gray-400">
-                  <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                  Loading projects...
-                </div>
-              </div>
-            }
-          >
-            {filteredProjects.map((project, index) => (
-              <ProjectCard key={project.key} project={project} index={index} />
-            ))}
-          </Suspense>
+          {filteredProjects.map((project, index) => (
+            <ProjectCard key={project.key} project={project} index={index} />
+          ))}
         </div>
 
         {/* Empty State */}
@@ -458,7 +379,8 @@ export default function Projects() {
         )}
       </div>
 
-      {/* Global styles for slick dots */}
+      {/* Global styles for slick dots — this is the ONLY copy now (removed the
+          duplicate that used to be re-rendered inside every ProjectCard) */}
       <style jsx global>{`
         .slick-dots-container {
           position: absolute;
@@ -466,7 +388,7 @@ export default function Projects() {
           width: 100%;
           pointer-events: none;
         }
-        
+
         .slick-dots.custom-dots {
           position: relative;
           bottom: 0;
@@ -483,11 +405,11 @@ export default function Projects() {
           max-width: 100%;
           gap: 4px;
         }
-        
+
         .slick-dots.custom-dots::-webkit-scrollbar {
           display: none;
         }
-        
+
         .dot-wrapper {
           display: flex;
           align-items: center;
@@ -497,7 +419,7 @@ export default function Projects() {
           margin: 0;
           flex-shrink: 0;
         }
-        
+
         .custom-dot {
           width: 6px;
           height: 6px;
@@ -506,25 +428,25 @@ export default function Projects() {
           transition: all 0.3s ease;
           margin: 0 2px;
         }
-        
+
         .slick-dots li.slick-active .custom-dot {
           width: 20px;
           border-radius: 10px;
           background-color: rgba(255, 255, 255, 0.9);
         }
-        
+
         .slick-dots li {
           margin: 0;
           width: auto;
           height: auto;
         }
-        
+
         .slick-dots li button {
           width: 24px;
           height: 24px;
           padding: 0;
         }
-        
+
         .slick-dots li button:before {
           display: none;
         }

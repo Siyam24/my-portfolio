@@ -82,7 +82,7 @@ export default function Contact() {
         {/* Additional Info */}
         <div className="text-center mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
           <p className="text-gray-600 dark:text-gray-400 text-sm">
-            📍 Based in Colombo, Sri Lanka<br />
+            📍 Based in London, UK<br />
             💬 Always open to discussing new opportunities and collaborations
           </p>
         </div>
