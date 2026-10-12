@@ -14,7 +14,6 @@ import profileImage from "../assets/projects/siyam1.jpg";
 const ROLES = [
   "Software Engineer",
   "Full Stack Developer",
-  "React Developer",
   "Data Science Enthusiast",
 ];
 
