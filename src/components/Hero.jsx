@@ -1,5 +1,12 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { ChevronDown, Github, Linkedin, Mail, Download, Sparkles } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  ChevronDown,
+  Github,
+  Linkedin,
+  Mail,
+  Download,
+  Sparkles,
+} from "lucide-react";
 
 import profileImage from "../assets/projects/siyam1.jpg";
 
@@ -83,8 +90,8 @@ export default function Hero() {
     >
       <DecorativeBackground />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <HeroText
             currentRole={currentRole}
             onViewWork={scrollToProjects}
@@ -92,7 +99,10 @@ export default function Hero() {
             onResume={handleResumeClick}
           />
 
-          <ProfileImage imageError={imageError} onImageError={handleImageError} />
+          <ProfileImage
+            imageError={imageError}
+            onImageError={handleImageError}
+          />
         </div>
       </div>
 
@@ -105,7 +115,10 @@ export default function Hero() {
 
 function HeroText({ currentRole, onViewWork, onGetInTouch, onResume }) {
   return (
-    <div className="text-center lg:text-left lg:translate-x-12" data-aos="fade-right">
+    <div
+      className="text-center lg:text-left lg:translate-x-12"
+      data-aos="fade-right"
+    >
       <WelcomeBadge />
 
       <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
@@ -131,7 +144,8 @@ function HeroText({ currentRole, onViewWork, onGetInTouch, onResume }) {
         <span className="text-blue-600 dark:text-blue-400 font-semibold">
           digital experiences
         </span>{" "}
-        that solve real-world problems. Specializing in modern web technologies and{" "}
+        that solve real-world problems. Specializing in modern web technologies
+        and{" "}
         <span className="text-cyan-600 dark:text-cyan-400 font-semibold">
           innovative solutions
         </span>
@@ -156,7 +170,10 @@ function HeroText({ currentRole, onViewWork, onGetInTouch, onResume }) {
 function WelcomeBadge() {
   return (
     <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-white/10 backdrop-blur-sm border border-gray-200 dark:border-white/20 rounded-full px-4 py-2 mb-8">
-      <Sparkles className="w-4 h-4 text-yellow-500 dark:text-yellow-400" aria-hidden="true" />
+      <Sparkles
+        className="w-4 h-4 text-yellow-500 dark:text-yellow-400"
+        aria-hidden="true"
+      />
       <span className="text-sm font-medium text-gray-700 dark:text-white">
         Available for new opportunities
       </span>
@@ -199,11 +216,15 @@ function CTAButtons({ onViewWork, onGetInTouch, onResume }) {
 
 function ProfileImage({ imageError, onImageError }) {
   return (
-    <div className="relative" data-aos="fade-left" data-aos-delay="200">
-      <div className="relative mx-auto lg:mx-0 max-w-md">
-        {/* Background glow */}
+    <div
+      className="relative flex justify-center lg:justify-end self-center"
+      data-aos="fade-left"
+      data-aos-delay="200"
+    >
+      <div className="relative w-full max-w-sm lg:max-w-md">
+        {/* Background glow — reduced inset so it doesn't add visual spacing */}
         <div
-          className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-xl opacity-20 animate-pulse"
+          className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-xl opacity-20 animate-pulse"
           aria-hidden="true"
         />
 
@@ -229,19 +250,22 @@ function ProfileImage({ imageError, onImageError }) {
           </div>
         </div>
 
-        {/* Floating accents */}
+        {/* Floating accents — kept inside bounds */}
         <div
-          className="absolute -top-4 -right-4 w-20 h-20 bg-yellow-400/20 dark:bg-yellow-400/10 rounded-full blur-xl animate-float"
+          className="absolute -top-3 -right-3 w-16 h-16 bg-yellow-400/20 dark:bg-yellow-400/10 rounded-full blur-xl animate-float"
           aria-hidden="true"
         />
         <div
-          className="absolute -bottom-4 -left-4 w-16 h-16 bg-purple-400/20 dark:bg-purple-400/10 rounded-full blur-xl animate-float delay-1000"
+          className="absolute -bottom-3 -left-3 w-12 h-12 bg-purple-400/20 dark:bg-purple-400/10 rounded-full blur-xl animate-float delay-1000"
           aria-hidden="true"
         />
 
         {/* Status pill */}
-        <div className="absolute bottom-6 right-6 flex items-center gap-2 bg-black/50 backdrop-blur-sm rounded-full px-3 py-2 border border-white/20">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" aria-hidden="true" />
+        <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-black/50 backdrop-blur-sm rounded-full px-3 py-2 border border-white/20">
+          <div
+            className="w-2 h-2 bg-green-500 rounded-full animate-pulse"
+            aria-hidden="true"
+          />
           <span className="text-xs font-medium text-white">Open to work</span>
         </div>
       </div>
@@ -251,7 +275,7 @@ function ProfileImage({ imageError, onImageError }) {
 
 function ImageFallback() {
   return (
-    <div className="w-full h-96 flex flex-col items-center justify-center bg-gradient-to-br from-blue-500/20 to-purple-600/20">
+    <div className="w-full h-80 flex flex-col items-center justify-center bg-gradient-to-br from-blue-500/20 to-purple-600/20">
       <div className="text-6xl mb-4" aria-hidden="true">
         👨‍💻
       </div>
@@ -297,7 +321,8 @@ function DecorativeBackground() {
             backgroundImage: `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)`,
             backgroundSize: "50px 50px",
-            maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent)",
+            maskImage:
+              "radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent)",
           }}
         />
       </div>
