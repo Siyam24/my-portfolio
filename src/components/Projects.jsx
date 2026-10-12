@@ -122,10 +122,7 @@ const ProjectCard = memo(({ project, index }) => {
       {isFeatured && (
         <div className="absolute top-4 left-4 z-10">
           <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-            <Star
-              className="w-3 h-3 fill-current"
-              aria-hidden="true"
-            />
+            <Star className="w-3 h-3 fill-current" aria-hidden="true" />
             Featured
           </span>
         </div>
@@ -136,10 +133,7 @@ const ProjectCard = memo(({ project, index }) => {
         <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="flex gap-2">
             <div className="bg-black/60 backdrop-blur-sm rounded-full p-2">
-              <Eye
-                className="w-4 h-4 text-white"
-                aria-hidden="true"
-              />
+              <Eye className="w-4 h-4 text-white" aria-hidden="true" />
             </div>
           </div>
         </div>
@@ -180,10 +174,7 @@ const ProjectCard = memo(({ project, index }) => {
               className="text-green-600 hover:text-green-700 transition-colors flex-shrink-0"
               title="Live Demo"
             >
-              <ExternalLink
-                className="w-4 h-4"
-                aria-hidden="true"
-              />
+              <ExternalLink className="w-4 h-4" aria-hidden="true" />
             </a>
           )}
         </div>
@@ -216,13 +207,8 @@ const ProjectCard = memo(({ project, index }) => {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group/link"
             >
-              <Github
-                className="w-4 h-4"
-                aria-hidden="true"
-              />
-
+              <Github className="w-4 h-4" aria-hidden="true" />
               <span>Source Code</span>
-
               <ExternalLink
                 className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity"
                 aria-hidden="true"
@@ -230,10 +216,7 @@ const ProjectCard = memo(({ project, index }) => {
             </a>
           ) : (
             <span className="flex items-center gap-2 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
-              <Github
-                className="w-4 h-4"
-                aria-hidden="true"
-              />
+              <Github className="w-4 h-4" aria-hidden="true" />
               <span>Coming Soon</span>
             </span>
           )}
@@ -335,9 +318,7 @@ export default function Projects() {
   const filteredProjects =
     activeFilter === "all"
       ? projects
-      : projects.filter(
-          (project) => project.category === activeFilter
-        );
+      : projects.filter((project) => project.category === activeFilter);
 
   return (
     <section
@@ -350,9 +331,12 @@ export default function Projects() {
           className="text-center mb-16"
           data-aos="fade-up"
         >
-          <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-gray-800 to-blue-600 dark:from-white dark:to-blue-400 bg-clip-text text-transparent">
+          <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 to-blue-600 dark:from-white dark:to-blue-400 bg-clip-text text-transparent leading-tight pb-2">
             My Projects
           </h2>
+
+          {/* Underline bar (matches About section) */}
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mb-8 rounded-full"></div>
 
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
             A collection of my work spanning full-stack web development,
