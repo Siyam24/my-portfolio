@@ -234,7 +234,9 @@ function ProfileImage({ imageError, onImageError }) {
           />
 
           <div className="relative rounded-2xl overflow-hidden border-4 border-white/50 dark:border-white/10 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
-            {!imageError ? (
+            {imageError ? (
+              <ImageFallback />
+            ) : (
               <img
                 src={profileImage}
                 alt="Siyam Vijayaraj - Software Engineer"
@@ -243,8 +245,6 @@ function ProfileImage({ imageError, onImageError }) {
                 loading="eager"
                 fetchPriority="high"
               />
-            ) : (
-              <ImageFallback />
             )}
           </div>
         </div>
